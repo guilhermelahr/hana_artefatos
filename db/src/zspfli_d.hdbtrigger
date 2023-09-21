@@ -1,0 +1,52 @@
+TRIGGER "ZSPFLI_LOG_D"
+  AFTER DELETE
+   ON "ZSPFLI" REFERENCING NEW ROW NR,
+    OLD ROW OD FOR EACH ROW 
+BEGIN
+  --DECLARE dif_days integer;
+  --SELECT DAYS_BETWEEN(:OD.LASTUPDATE, CURRENT_DATE) INTO dif_days FROM "DUMMY";
+  IF DAYS_BETWEEN(:OD.LASTUPDATE, CURRENT_DATE) <= 120 THEN
+  INSERT INTO "ZSPFLI_LOG"(
+      UUID,
+      MANDT,
+      CARRID,
+      CONNID,
+      COUNTRYFR,
+      CITYFROM,
+      AIRPFROM,
+      COUNTRYTO,
+      CITYTO,
+      AIRPTO,
+      FLTIME,
+      DEPTIME,
+      ARRTIME,
+      DISTANCE,
+      DISTID,
+      FLTYPE,
+      PERIOD,
+      CDC,
+      TIMESTAMP
+    )
+  VALUES (
+      NEWUID(),
+      :OD.MANDT,
+      :OD.CARRID,
+      :OD.CONNID,
+      :OD.COUNTRYFR,
+      :OD.CITYFROM,
+      :OD.AIRPFROM,
+      :OD.COUNTRYTO,
+      :OD.CITYTO,
+      :OD.AIRPTO,
+      :OD.FLTIME,
+      :OD.DEPTIME,
+      :OD.ARRTIME,
+      :OD.DISTANCE,
+      :OD.DISTID,
+      :OD.FLTYPE,
+      :OD.PERIOD,
+      'D',
+      :OD.LASTUPDATE
+    );
+END IF;
+END;

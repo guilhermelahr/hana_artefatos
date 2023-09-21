@@ -1,0 +1,48 @@
+TRIGGER "ZSPFLI_LOG_I"
+  AFTER
+  INSERT
+   ON "ZSPFLI" REFERENCING NEW ROW NR FOR EACH ROW 
+BEGIN
+  INSERT INTO "ZSPFLI_LOG"(
+      UUID,
+      MANDT,
+      CARRID,
+      CONNID,
+      COUNTRYFR,
+      CITYFROM,
+      AIRPFROM,
+      COUNTRYTO,
+      CITYTO,
+      AIRPTO,
+      FLTIME,
+      DEPTIME,
+      ARRTIME,
+      DISTANCE,
+      DISTID,
+      FLTYPE,
+      PERIOD,
+      CDC,
+      TIMESTAMP
+    )
+  VALUES (
+      NEWUID(),
+      :nr.MANDT,
+      :nr.CARRID,
+      :nr.CONNID,
+      :nr.COUNTRYFR,
+      :nr.CITYFROM,
+      :nr.AIRPFROM,
+      :nr.COUNTRYTO,
+      :nr.CITYTO,
+      :nr.AIRPTO,
+      :nr.FLTIME,
+      :nr.DEPTIME,
+      :nr.ARRTIME,
+      :nr.DISTANCE,
+      :nr.DISTID,
+      :nr.FLTYPE,
+      :nr.PERIOD,
+      'I',
+      :nr.LASTUPDATE
+    );
+END;

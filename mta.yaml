@@ -1,0 +1,26 @@
+_schema-version: '3.1'
+ID: bsa-sample-tables
+version: 1.0.0
+description: "A simple CAP project."
+parameters:
+  enable-parallel-deployments: true
+build-parameters:
+  before-all:
+    - builder: custom
+      commands:
+        - cds build --production
+modules:
+  - name: bsa-sample-tables-db-deployer
+    type: hdb
+    path: gen/db
+    requires:
+      - name: bsa-sample-tables-db
+
+resources:
+  - name: bsa-sample-tables-db
+    type: com.sap.xs.hdi-container
+    parameters:
+      service: hana
+      service-plan: hdi-shared
+      config:
+        schema: REPLICATION
