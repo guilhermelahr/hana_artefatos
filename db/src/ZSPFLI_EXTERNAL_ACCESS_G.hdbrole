@@ -1,0 +1,15 @@
+{
+    "role": {
+        "name": "ZSPFLI_EXTERNAL_ACCESS_G#",
+        "object_privileges": [
+            {
+                "name": "ZSPFLI",
+                "type": "TABLE",
+                "privileges": [],
+                "privileges_with_grant_option": [
+                    "SELECT"
+                ]
+            }
+        ]
+    }
+}
